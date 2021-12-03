@@ -1,0 +1,28 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: robot-shop-app
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: robot-shop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: config/apps/robot-shop
+    repoURL: https://github.com/huang-cn/sample-app-gitops
+    targetRevision: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  ignoreDifferences:
+    - group: console.openshift.io
+      jsonPointers:
+        - /spec/href
+      kind: ConsoleLink
