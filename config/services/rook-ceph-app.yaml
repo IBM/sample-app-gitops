@@ -16,7 +16,7 @@ spec:
   source:
     path: config/services/rook-ceph
     repoURL: https://github.com/huang-cn/sample-app-gitops
-    targetRevision: dev
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

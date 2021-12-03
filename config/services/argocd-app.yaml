@@ -16,7 +16,7 @@ spec:
   source:
     path: config/services/argocd
     repoURL: https://github.com/huang-cn/sample-app-gitops
-    targetRevision: dev
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

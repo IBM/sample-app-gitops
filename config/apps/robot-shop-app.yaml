@@ -16,7 +16,7 @@ spec:
   source:
     path: config/apps/robot-shop
     repoURL: https://github.com/huang-cn/sample-app-gitops
-    targetRevision: dev
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
