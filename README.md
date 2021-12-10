@@ -64,20 +64,6 @@ In our case, we defined some customized health checks for Kubernetes custom reso
 
 To simplify the scenario, we will apply these configuration to the cluster that runs the Argo CD instance, so that the application will also be co-located with Argo CD in the same cluster.
 
-#### Configure Repositories
-
-In order to have Argo CD know where to find the configuration, firstly you may need to add Git repositories into Argo CD. This is required when you have private repositories that need credentials to access to. To configure repositories in Argo CD, choose `Settings -> Repositories`, then click the "CONNECT REPO ..." buttons per the access method you choose to connect the repository. For example, if you use https to connect to the repository, then click `CONNECT REPO USING HTTPS`.
-
-![](images/config-git-repo.png)
-
-In our case, we have two repositories need to be configured:
-
-| Repository                                                | Description
-|:----------------------------------------------------------|-------------
-| https://github.com/cloud-pak-gitops/sample-app-gitops     | The environment configuration repository for sample application.
-| https://github.ibm.com/gitops-circus/gitops-circus-charts | The repository used to store helm charts for sample application, including the storage configuration.
-
-After you fill in all the fields, click `CONNECT` button to finish the configuration, then go to `Applications` page and click `NEW APP` button to create the Argo Applications.
 
 #### Configure Argo CD
 
@@ -123,7 +109,7 @@ Create an Argo Application to deploy the sample application by filling out the `
 | Project          | default
 | Repository URL   | https://github.ibm.com/gitops-circus/robot-shop-gitops
 | Revision         | HEAD
-| Path             | config/apps
+| Path             | config/apps/robot-shop
 | Cluster URL      | https://kubernetes.default.svc
 | Namespace        | n/a
 
