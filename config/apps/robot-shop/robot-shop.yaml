@@ -29,3 +29,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+  ignoreDifferences:
+    - group: console.openshift.io
+      jsonPointers:
+        - /spec/href
+      kind: ConsoleLink
