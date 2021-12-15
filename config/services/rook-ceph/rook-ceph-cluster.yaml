@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/huang-cn/sample-app-gitops/
+    repoURL: https://github.com/cloud-pak-gitops/sample-app-gitops
     path: gitops-charts/rook-ceph-cluster
     targetRevision: HEAD
   syncPolicy:
