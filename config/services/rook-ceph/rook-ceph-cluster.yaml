@@ -16,7 +16,7 @@ spec:
   source:
     repoURL: https://github.com/huang-cn/sample-app-gitops
     path: gitops-charts/rook-ceph-cluster
-    targetRevision: dev5
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
