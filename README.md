@@ -71,7 +71,7 @@ TARGET_CLUSTER='https://<my-target-cluster-domain>.com:6443'
 
 - Configure Argo CD
 ```bash
-argocd app create myapp-argo --repo $GIT_REPO \
+argocd app create sample-argo --repo $GIT_REPO \
   --dest-server $TARGET_CLUSTER \
   --sync-policy automated \
   --revision HEAD \
@@ -81,7 +81,7 @@ argocd app create myapp-argo --repo $GIT_REPO \
 - Setup Storage  
 Skip this step if you already have persistent storage configured in the target cluster.
 ```shell
-argocd app create myapp-storage --repo $GIT_REPO \
+argocd app create sample-storage --repo $GIT_REPO \
   --dest-server $TARGET_CLUSTER \
   --sync-policy automated \
   --revision HEAD \
@@ -95,7 +95,7 @@ oc get pod -n rook-ceph
 #### Deploy Robot Shop 
 
 ```shell
-argocd app create myapp-robot-shop --repo $GIT_REPO \
+argocd app create sample-robot-shop --repo $GIT_REPO \
   --dest-server $ARGO_CLUSTER \
   --sync-policy automated \
   --revision HEAD \
@@ -115,11 +115,11 @@ In Argo CD application management, click `NEW APP` button.
 - Source section
   - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
   - Revision, use `HEAD`
-  - Path, use `config/services/argocd`
+  - Path, use `config/services/argocd`  
   ![image](Doc/images/UI-argocd-source.png)
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
-  - Namespace, leave blank.
+  - Namespace, leave blank.  
   ![image](Doc/images/UI-argocd-dest.png)  
 Click on `CREATE` to create the app.  
 
@@ -133,11 +133,11 @@ In Argo CD application management, click `NEW APP` button.
 - Source section
   - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
   - Revision, use `HEAD`
-  - Path, use `config/services/rook-ceph`
+  - Path, use `config/services/rook-ceph`  
   ![image](Doc/images/UI-storage-source.png)
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
-  - Namespace, use `rook-ceph`.
+  - Namespace, use `rook-ceph`.  
   ![image](Doc/images/UI-storage-dest.png)  
 Click on `CREATE` to create the app.  
 
@@ -151,11 +151,11 @@ In Argo CD application management, click `NEW APP` button.
 - Source section
   - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
   - Revision, use `HEAD`
-  - Path, use `config/apps/robot-shop`
+  - Path, use `config/apps/robot-shop`  
   ![image](Doc/images/UI-robot-source.png)
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
-  - Namespace, use `robot-shop`.
+  - Namespace, use `robot-shop`.  
   ![image](Doc/images/UI-robot-dest.png)  
 Click on `CREATE` to create the app.
 
@@ -173,4 +173,4 @@ Congratulations! You have successfully deployed the sample application Robot Sho
 
 # Uninstall Application
 
-To uninstall the application, choose the Application named `robot-shop-app` from Argo CD `Applications` page, then click `DELETE` button. This will bring down the application. Wait for a while till the Application along with its child Applications are all completely deleted, then go to check the menu on the top right side of OpenShift Console, you will see the menu item for the application has been removed.
+To uninstall the application, choose the Application named `sample-robot-shop` from Argo CD `Applications` page, then click `DELETE` button. This will bring down the application. Wait for a while till the Application along with its child Applications are all completely deleted, then go to check the menu on the top right side of OpenShift Console, you will see the menu item for the application has been removed.
