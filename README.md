@@ -15,8 +15,8 @@
       - [UI Configure Argo CD](#ui-configure-argo-cd)
       - [UI Setup Storage](#ui-setup-storage)
       - [UI Deploy Robot Shop](#ui-deploy-robot-shop)
-    - [Access Application](#access-application)
-    - [Uninstall Application](#uninstall-application)
+- [Access Application](#access-application)
+- [Uninstall Application](#uninstall-application)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -159,7 +159,7 @@ In Argo CD application management, click `NEW APP` button.
   ![image](Doc/images/UI-robot-dest.png)  
 Click on `CREATE` to create the app.
 
-### Access Application
+# Access Application
 
 To access the application, you can go back to the OpenShift Console, and open the menu on the top right side of the page. There will be a new menu item added for the application that we created just now.
 
@@ -171,6 +171,6 @@ Click that menu item will bring you to the application home page.
 
 Congratulations! You have successfully deployed the sample application Robot Shop using GitOps.
 
-### Uninstall Application
+# Uninstall Application
 
 To uninstall the application, choose the Application named `robot-shop-app` from Argo CD `Applications` page, then click `DELETE` button. This will bring down the application. Wait for a while till the Application along with its child Applications are all completely deleted, then go to check the menu on the top right side of OpenShift Console, you will see the menu item for the application has been removed.
