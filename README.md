@@ -81,10 +81,11 @@ argocd app create myapp-robot-shop --repo $GIT_REPO \
 ```
 ### Deploy with Gitops UI console
   
-In this example, we're going to use `https://my-target-cluster-domain.com:6443` as the example target cluster for the deployment.
+In this example, we will use `https://my-target-cluster-domain.com:6443` as the example target cluster for the deployment, replace it with your own target cluster when performing deployment.  
+
 #### UI Configure Argo CD
 In Argo CD application management, click `NEW APP` button.
-- Gernal section
+- Genrnal section
   - privide a name of your application, for example,  `sample-argo`
   - select desired Project for the deployment, the default project is `default`.
   
@@ -98,10 +99,10 @@ In Argo CD application management, click `NEW APP` button.
   - Namespace, leave blank.
 
 Click on `CREATE` to create the app.  
-
+   
 #### UI Setup Storage
 In Argo CD application management, click `NEW APP` button.
-- Gernal section
+- Genrnal section
   - privide a name of your application, for example,  `sample-storage`
   - select desired Project for the deployment, the default project is `default`.
   
@@ -118,7 +119,7 @@ Click on `CREATE` to create the app.
 
 #### UI Deploy Robot Shop 
 In Argo CD application management, click `NEW APP` button.
-- Gernal section
+- Genrnal section
   - privide a name of your application, for example,  `sample-robot-shop`
   - select desired Project for the deployment, the default project is `default`.
   
@@ -131,7 +132,7 @@ In Argo CD application management, click `NEW APP` button.
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, use `rook-ceph`.
 
-Click on `CREATE` to create the app.  
+Click on `CREATE` to create the app.
 
 ### Access Application
 
