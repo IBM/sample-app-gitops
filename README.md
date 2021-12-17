@@ -98,7 +98,7 @@ In Argo CD application management, click `NEW APP` button.
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, leave blank.
-  ![image](Doc/images/UI-argocd-dest.png)
+  ![image](Doc/images/UI-argocd-dest.png)  
 Click on `CREATE` to create the app.  
 
 #### UI Setup Storage
@@ -116,7 +116,7 @@ In Argo CD application management, click `NEW APP` button.
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, use `rook-ceph`.
-  ![image](Doc/images/UI-storage-dest.png)
+  ![image](Doc/images/UI-storage-dest.png)  
 Click on `CREATE` to create the app.  
 
 #### UI Deploy Robot Shop 
@@ -134,7 +134,7 @@ In Argo CD application management, click `NEW APP` button.
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, use `robot-shop`.
-  ![image](Doc/images/UI-robot-dest.png)
+  ![image](Doc/images/UI-robot-dest.png)  
 Click on `CREATE` to create the app.
 
 ### Access Application
