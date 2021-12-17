@@ -2,7 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [sample-app-gitops](#sample-app-gitops)
+- [Introduction](#introduction)
 - [Deploying Application](#deploying-application)
   - [Description](#description)
   - [Tools](#tools)
@@ -20,7 +20,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# sample-app-gitops
+# Introduction
 
 For both simplicity and consistency, all tutorials and working demos are designed using a single unique sample application, [Robot Shop](https://github.com/instana/robot-shop), which is small enough to run on a developer’s laptop but still have enough complexity to be interesting and not just a “Hello World” example.
 
