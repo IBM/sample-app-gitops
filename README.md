@@ -88,33 +88,35 @@ In Argo CD application management, click `NEW APP` button.
 - Genrnal section
   - privide a name of your application, for example,  `sample-argo`
   - select desired Project for the deployment, the default project is `default`.
-  
+  - Sync policy set to `Automatic`  
+  ![image](Doc/images/UI-argocd-general.png)
 - Source section
   - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
   - Revision, use `HEAD`
   - Path, use `config/services/argocd`
-  
+  ![image](Doc/images/UI-argocd-source.png)
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, leave blank.
-
+  ![image](Doc/images/UI-argocd-dest.png)
 Click on `CREATE` to create the app.  
-   
+
 #### UI Setup Storage
 In Argo CD application management, click `NEW APP` button.
 - Genrnal section
   - privide a name of your application, for example,  `sample-storage`
   - select desired Project for the deployment, the default project is `default`.
-  
+  - Sync policy set to `Automatic`   
+  ![image](Doc/images/UI-storage-general.png)
 - Source section
   - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
   - Revision, use `HEAD`
   - Path, use `config/services/rook-ceph`
-  
+  ![image](Doc/images/UI-storage-source.png)
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, use `rook-ceph`.
-
+  ![image](Doc/images/UI-storage-dest.png)
 Click on `CREATE` to create the app.  
 
 #### UI Deploy Robot Shop 
@@ -122,16 +124,17 @@ In Argo CD application management, click `NEW APP` button.
 - Genrnal section
   - privide a name of your application, for example,  `sample-robot-shop`
   - select desired Project for the deployment, the default project is `default`.
-  
+  - Sync policy set to `Automatic`  
+  ![image](Doc/images/UI-robot-general.png)
 - Source section
   - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
   - Revision, use `HEAD`
   - Path, use `config/apps/robot-shop`
-  
+  ![image](Doc/images/UI-robot-source.png)
 - Destination section
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
-  - Namespace, use `rook-ceph`.
-
+  - Namespace, use `robot-shop`.
+  ![image](Doc/images/UI-robot-dest.png)
 Click on `CREATE` to create the app.
 
 ### Access Application
