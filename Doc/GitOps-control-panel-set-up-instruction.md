@@ -1,11 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
-- [Setup GitOps Control Panel](#setup-gitops-control-panel)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # Setup GitOps Control Panel
   
 To setup a GitOps control panel, let's install OpenShift GitOps Operator from Operator Hub in an OpenShift cluster. Log into an OpenShift cluster using your account, navigate to `Operators -> OperatorHub`, then search `Red Hat OpenShift GitOps`.
