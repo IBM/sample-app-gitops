@@ -27,8 +27,9 @@ As an example, in this document, we will use Robot Shop as a sample application 
 ### Setup GitOps Control Panel
 First a ArgoCD Gitops server need to be set up, if you haven't done so, you can refer to [GitOps control panel set up instruction](Doc/GitOps-control-panel-set-up-instruction.md) to set it up.  
 
+### Deploy with Command Line
 
-### Prepare Environment
+#### Prepare Environment
 
 Before you can deploy the application using GitOps, you need to prepare the environment first which is one off work. For example, to configure Argo CD with custom settings, to prepare storage for your application persistence, and so on. All these work can also be completed using GitOps.
 
@@ -69,7 +70,7 @@ Use below command to check the rook-ceph deployment status in the target cluster
 ```shell
 oc get pod -n rook-ceph
 ```
-### Deploy Robot Shop 
+#### Deploy Robot Shop 
 
 ```shell
 argocd app create myapp-robot-shop --repo $GIT_REPO \
@@ -78,6 +79,59 @@ argocd app create myapp-robot-shop --repo $GIT_REPO \
   --revision HEAD \
   --path config/apps/robot-shop
 ```
+### Deploy with Gitops UI console
+  
+In this example, we're going to use `https://my-target-cluster-domain.com:6443` as the example target cluster for the deployment.
+#### UI Configure Argo CD
+In Argo CD application management, click `NEW APP` button.
+- Gernal section
+  - privide a name of your application, for example,  `sample-argo`
+  - select desired Project for the deployment, the default project is `default`.
+  
+- Source section
+  - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
+  - Revision, use `HEAD`
+  - Path, use `config/services/argocd`
+  
+- Destination section
+  - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
+  - Namespace, leave blank.
+
+Click on `CREATE` to create the app.  
+
+#### UI Setup Storage
+In Argo CD application management, click `NEW APP` button.
+- Gernal section
+  - privide a name of your application, for example,  `sample-storage`
+  - select desired Project for the deployment, the default project is `default`.
+  
+- Source section
+  - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
+  - Revision, use `HEAD`
+  - Path, use `config/services/rook-ceph`
+  
+- Destination section
+  - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
+  - Namespace, use `rook-ceph`.
+
+Click on `CREATE` to create the app.  
+
+#### UI Deploy Robot Shop 
+In Argo CD application management, click `NEW APP` button.
+- Gernal section
+  - privide a name of your application, for example,  `sample-robot-shop`
+  - select desired Project for the deployment, the default project is `default`.
+  
+- Source section
+  - Repository URL, use `https://github.com/cloud-pak-gitops/sample-app-gitops.git`
+  - Revision, use `HEAD`
+  - Path, use `config/apps/robot-shop`
+  
+- Destination section
+  - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
+  - Namespace, use `rook-ceph`.
+
+Click on `CREATE` to create the app.  
 
 ### Access Application
 
