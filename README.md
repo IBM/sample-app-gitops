@@ -101,6 +101,10 @@ argocd app create sample-robot-shop --repo $GIT_REPO \
   --revision HEAD \
   --path config/apps/robot-shop
 ```
+Use below command to check the robot-shop deployment status in the target cluster, once deployment completed, all pods should be showing status `Running`.
+```shell
+oc get pod -n robot-shop
+```
 ### Deploy with Gitops UI console
   
 In this example, we will use `https://my-target-cluster-domain.com:6443` as the example target cluster for the deployment, replace it with your own target cluster when performing deployment.  
@@ -140,7 +144,12 @@ In Argo CD application management, click `NEW APP` button.
   - Namespace, use `rook-ceph`.  
   ![image](Doc/images/UI-storage-dest.png)  
 Click on `CREATE` to create the app.  
-
+  
+rook-cepth storage deployment will take a while, usually over 15 minutes.  
+Use below command to check the rook-ceph deployment status in the target cluster, once deployment completed, all pods should be showing status `Running`.
+```shell
+oc get pod -n rook-ceph
+```
 #### UI Deploy Robot Shop 
 In Argo CD application management, click `NEW APP` button.
 - Genrnal section
@@ -157,8 +166,12 @@ In Argo CD application management, click `NEW APP` button.
   - Cluster URL, provide the target cluster URL, example - `https://my-target-cluster-domain.com:6443`
   - Namespace, use `robot-shop`.  
   ![image](Doc/images/UI-robot-dest.png)  
-Click on `CREATE` to create the app.
-
+Click on `CREATE` to create the app.  
+  
+Use below command to check the robot-shop deployment status in the target cluster, once deployment completed, all pods should be showing status `Running`.
+```shell
+oc get pod -n robot-shop
+```
 # Access Application
 
 To access the application, you can go back to the OpenShift Console, and open the menu on the top right side of the page. There will be a new menu item added for the application that we created just now.
