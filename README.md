@@ -45,6 +45,8 @@ As an example, in this document, we will use Robot Shop as a sample application 
 * Helm
 
 ## Instructions
+  
+  A Quick Video Tutorial is available demonstrate the deployment process [https://youtu.be/B_UY0JWFFSE](https://youtu.be/B_UY0JWFFSE).
 
 ### Setup GitOps Control Panel
 First a ArgoCD Gitops server need to be set up, if you haven't done so, you can refer to [GitOps control panel set up instruction](Doc/GitOps-control-panel-set-up-instruction.md) to set it up.  
