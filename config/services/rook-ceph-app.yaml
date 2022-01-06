@@ -14,6 +14,29 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
+    repoURL: https://github.com/huang-cn/sample-app-gitops
+    path: config/services/rook-ceph
+    targetRevision: gitops_humio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-charts
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
     helm:
       parameters:
         - name: hostpathRequiresPrivileged
@@ -45,7 +68,7 @@ spec:
   source:
     repoURL: https://github.com/huang-cn/sample-app-gitops
     path: gitops-charts/rook-ceph-cluster
-    targetRevision: HEAD
+    targetRevision: gitops_humio
   syncPolicy:
     automated:
       prune: true
