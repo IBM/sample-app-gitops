@@ -1,16 +1,27 @@
 ---
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
 apiVersion: apps/v1beta1
+{{- end }}
 kind: Deployment
 metadata:
   name: metricbeat
   labels:
     k8s-app: metricbeat
 spec:
+  selector:
+    matchLabels:
+      k8s-app: metricbeat
   template:
     metadata:
       labels:
         k8s-app: metricbeat
     spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       serviceAccountName: metricbeat
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
@@ -80,8 +91,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-        securityContext:
-          runAsUser: 0
         {{- with .Values.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
@@ -94,6 +103,8 @@ spec:
         - name: modules
           mountPath: /usr/share/metricbeat/modules.d
           readOnly: true
+      securityContext:
+        fsGroup: 1000
       volumes:
       - name: config
         configMap:

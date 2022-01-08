@@ -1,4 +1,8 @@
-apiVersion: apps/v1beta1
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta2
+{{- end }}
 kind: StatefulSet
 metadata:
   name: {{ include "humio-core.fullname" . }}
@@ -34,6 +38,10 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       serviceAccountName: {{ .Release.Name }}
+    {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
@@ -49,7 +57,7 @@ spec:
           - kubectl
           - wait
           - "--for=condition=Ready"
-          - "pod/{{ .Release.Name }}-cp-kafka-{{ sub .Values.kafka.brokers 1 }}"
+          - "pod/{{ .Release.Name }}-cp-kafka-{{ include "humio-core.kafka.lastBroker" . }}"
           - "-n"
           - {{ .Release.Namespace }}
           - "--timeout=1500s"
@@ -70,14 +78,15 @@ spec:
           - name: shared
             mountPath: /shared
     {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ default "humio/humio-core:1.7.0" .Values.image }}
+          image: {{ .Values.image }}
           command: ["/bin/sh"]
           {{- if eq .Values.clusterIdentity.type "zookeeper" }}
-          args: ["-c", "export ZOOKEEPER_PREFIX_FOR_NODE_UUID=/humio_$(cat /shared/zookeeper-prefix)_ && bash /app/humio/run.sh"]
+          args: ["-c", "export ZOOKEEPER_PREFIX_FOR_NODE_UUID=/humio_$(cat /shared/zookeeper-prefix)_ && exec bash /app/humio/run.sh"]
           {{- else }}
-          args: ["-c", "export BOOTSTRAP_HOST_ID=$((${POD_NAME##*-} + 1)) && bash /app/humio/run.sh"]
+          args: ["-c", "export BOOTSTRAP_HOST_ID=$((${POD_NAME##*-} + 1)) && exec bash /app/humio/run.sh"]
           {{- end }}
           imagePullPolicy: Always
           ports:
@@ -161,6 +170,12 @@ spec:
             subPath: extra_kafka_properties.properties
             readOnly: true
         {{- end }}
+        {{- if eq .Values.bucketStorage.backend "gcp" }}
+          - name: gcp-storage-account-json-file
+            mountPath: /var/lib/humio/gcp-storage-account-json-file
+            subPath: gcp-storage-account-json-file
+            readOnly: true
+        {{- end }}
           env:
           {{- if and .Values.cache.localVolume.enabled (eq .Values.primaryStorage.type "remote") }}
             - name: CACHE_STORAGE_DIRECTORY
@@ -209,10 +224,6 @@ spec:
               value: "true"
             - name: DEFAULT_USER_INPUT_REGEX_ENGINE
               value: {{ .Values.defaultUserInputRegexEngine | quote }}
-            - name: BLOOMFILTER_BACKFILLING_ENABLED
-              value: {{ .Values.bloomfilter.backfillingEnabled | quote }}
-            - name: BLOOMFILTER_ENABLED
-              value: {{ .Values.bloomfilter.enabled | quote }}
             - name: EXTERNAL_URL
               value: "http://$(POD_NAME).{{ .Release.Name }}-humio-core-headless.$(POD_NAMESPACE).svc.cluster.local:8080"
             {{- if ne .Values.authenticationMethod "" }}
@@ -259,6 +270,10 @@ spec:
             - name: PROMETHEUS_METRICS_PORT
               value: {{ .Values.prometheus.port | quote }}
             {{- end }}
+            {{- if eq .Values.bucketStorage.backend "gcp" }}
+            - name: GCP_STORAGE_ACCOUNT_JSON_FILE
+              value: "/var/lib/humio/gcp-storage-account-json-file"
+            {{- end }}
             {{- if .Values.env }}
               {{- with .Values.env }}
                 {{- toYaml . | nindent 12 }}
@@ -266,6 +281,10 @@ spec:
             {{- end }}
           {{- with .Values.resources }}
           resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.nodeSelector }}
@@ -289,6 +308,11 @@ spec:
     {{- if eq .Values.clusterIdentity.type "zookeeper" }}
       - name: shared
         emptyDir: {}
+    {{- end }}
+    {{- if eq .Values.bucketStorage.backend "gcp" }}
+      - name: gcp-storage-account-json-file
+        secret:
+          secretName: gcp-storage-account-json-file
     {{- end }}
     {{- if ne .Values.extraKafkaConfigs "" }}
       - name: extra-kafka-configs

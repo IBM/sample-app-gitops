@@ -1,4 +1,8 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: DaemonSet
 metadata:
   name: {{ .Release.Name }}-fluentbit
@@ -8,6 +12,9 @@ metadata:
     version: v1
     kubernetes.io/cluster-service: "true"
 spec:
+  selector:
+    matchLabels:
+      k8s-app: {{ .Release.Name }}
   template:
     metadata:
       labels:
@@ -19,6 +26,10 @@ spec:
         prometheus.io/port: "2020"
         prometheus.io/path: /api/v1/metrics/prometheus
     spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
 {{- if .Values.es.autodiscovery }}
       initContainers:
         - name: wait-for-humio
@@ -52,8 +63,14 @@ spec:
 {{- end }}
       containers:
       - name: {{ .Release.Name }}
-        image: {{ default "fluent/fluent-bit:1.2.2" .Values.image }}
+        image: {{ default "fluent/fluent-bit:1.6.10" .Values.image }}
         command: ["/fluent-bit/bin/fluent-bit", "-c", "/fluent-bit/etc/fluent-bit.conf", "-H"]
+    {{- if .Values.securityContext }}
+      {{- with .Values.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+      {{- end }}
+    {{- end }}
         livenessProbe:
           httpGet:
             path: /api/v1/metrics
@@ -84,12 +101,12 @@ spec:
           {{- end }}
         - name: HUMIO_REPO_NAME
           value: {{ .Values.humioRepoName | quote }}
-        {{- if .Values.token }}
+        {{- if or .Values.token .Values.tokenSecretName }}
         - name: HUMIO_INGEST_TOKEN
           valueFrom:
             secretKeyRef:
-              name: fluentbit-custom-token
-              key: token
+              name: {{ .Values.tokenSecretName | default "fluentbit-custom-token" }}
+              key: {{ .Values.tokenSecretKeyName }}
         {{- else -}}
           {{- if .Values.global -}}
             {{- if .Values.global.sharedTokens }}
@@ -98,7 +115,42 @@ spec:
           valueFrom:
             secretKeyRef:
               name: fluentbit-shared-token
-              key: token
+              key: {{ .Values.tokenSecretKeyName }}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end  }}
+        - name: FLUENT_HEC_HOST
+          value: {{ default "cloud.humio.com" .Values.humioHecHostname | quote }}
+        - name: FLUENT_HEC_PORT
+          value: {{ default "443" .Values.hec.port | quote }}
+        - name: FLUENT_HEC_TLS
+          {{- if .Values.hec.tls }}
+          value: "On"
+          {{- else }}
+          value: "Off"
+          {{- end }}
+        - name: FLUENT_HEC_TLS_VERIFY
+          {{- if and .Values.hec.tls .Values.hec.tls_verify }}
+          value: "On"
+          {{- else }}
+          value: "Off"
+          {{- end }}
+        {{- if or .Values.hecToken .Values.hecTokenSecretName }}
+        - name: HUMIO_HEC_INGEST_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.hecTokenSecretName | default "fluentbit-custom-hec-token" }}
+              key: {{ .Values.hecTokenSecretKeyName }}
+        {{- else -}}
+          {{- if .Values.global -}}
+            {{- if .Values.global.sharedTokens }}
+              {{- if .Values.global.sharedTokens.fluentbit_hec }}
+        - name: HUMIO_HEC_INGEST_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: fluentbit-hec-shared-token
+              key: {{ .Values.hecTokenSecretKeyName }}
               {{- end -}}
             {{- end -}}
           {{- end -}}
@@ -106,11 +158,22 @@ spec:
         volumeMounts:
         - name: varlog
           mountPath: /var/log
+        {{- if eq .Values.kubernetesType "ibm" }}
+        - name: vardatakubeletlogs
+          mountPath: /var/data/kubeletlogs
+          readOnly: true
+        {{- else }}
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
+        {{- end }}
         - name: config
           mountPath: /fluent-bit/etc/
+        {{- if .Values.extraVolumeMounts }}
+        {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- end }}
         {{- with .Values.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
@@ -120,14 +183,32 @@ spec:
       - name: varlog
         hostPath:
           path: /var/log
+      {{- if eq .Values.kubernetesType "ibm" }}
+      - name: vardatakubeletlogs
+        hostPath:
+          path: /var/data/kubeletlogs
+      {{- else }}
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
+      {{- end }}
+      {{- if .Values.extraVolumes }}
+      {{- with .Values.extraVolumes }}
+          {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- end }}
       - name: config
         configMap:
           name: {{ .Release.Name }}-fluent-bit-config
       serviceAccountName: {{ .Release.Name }}-fluentbit-read
+      {{- with .Values.tolerations }}
       tolerations:
       - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

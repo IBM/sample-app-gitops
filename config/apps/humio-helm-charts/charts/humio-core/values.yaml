@@ -1,7 +1,8 @@
 ---
 # Humio Defaults
 replicas: 3
-image: humio/humio-core:1.7.0
+image: humio/humio-core:1.12.4
+terminationGracePeriodSeconds: 300
 
 # Warning: changing this to a unsupported mode will disable authentation.
 # If set to "saml", use the samlConfig to set the saml configuration.
@@ -35,10 +36,6 @@ ingest:
 
 storage:
   initialPartitionsPerNode: 4
-
-bloomfilter:
-  enabled: false
-  backfillingEnabled: false
 
 defaultUserInputRegexEngine: HUMIO
 
@@ -113,8 +110,8 @@ localVolume:
     size: 100Gi
 
 compression:
-  type: fast
-  level: 3
+  type: high
+  level: 9
 
 prometheus:
   enabled: false
@@ -129,8 +126,16 @@ ingress:
 github:
   enabled: false
 
+#bucket storage setup
+bucketStorage:
+  backend: ""
+
 nodeSelector: {}
 tolerations: []
+containerSecurityContext:
+  capabilities:
+    add: ["SYS_NICE"]
+podSecurityContext: {}
 affinity: {}
 livenessProbe: {}
 readinessProbe: {}
@@ -139,6 +144,9 @@ storageVolume: {}
 storageClass: {}
 # Follow https://kubernetes.io/docs/concepts/storage/volumes/#hostpath for defining hostPath.
 hostPath: {}
+serviceAccountAnnotations: {}
+openshift:
+  host: ""
 
 # Dependencies
 cp-helm-charts:

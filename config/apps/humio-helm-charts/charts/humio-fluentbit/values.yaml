@@ -1,5 +1,6 @@
-image: fluent/fluent-bit:1.2.2
+image: fluent/fluent-bit:1.6.10
 imagePullPolicy: Always
+imagePullSecrets: []
 
 strixImage: humio/strix:latest
 strixImagePullPolicy: Always
@@ -12,8 +13,23 @@ es:
   tls_verify: true
   autodiscovery: false
 
+hec:
+  port: 443
+  tls: false
+  tls_verify: true
+
 nameOverride: ""
 fullnameOverride: ""
+
+kubernetesType: ""
+
+tokenSecretName: ""
+tokenSecretKeyName: token
+hecTokenSecretName: ""
+hecTokenSecretKeyName: token
+
+extraVolumes: {}
+extraVolumeMounts: {}
 
 resources:
   limits:
@@ -49,6 +65,7 @@ filterConfig: |-
       Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
       Merge_Log           On
+      Merge_Log_Key       log_processed
       K8S-Logging.Parser  On
       K8S-Logging.Exclude On
 
@@ -68,6 +85,7 @@ outputConfig: |-
       Time_Key @timestamp
       Replace_Dots On
       Logstash_Prefix FluentBitHelmChart
+      Buffer_Size 5MB
 
 parserConfig: |-
   [PARSER]
@@ -122,3 +140,6 @@ customFluentBitConfig:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+securityContext: {}
+scc:
+  enabled: false

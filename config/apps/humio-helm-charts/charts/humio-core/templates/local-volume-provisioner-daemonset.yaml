@@ -1,8 +1,13 @@
 {{- if and (or .Values.cache.localVolume.enabled (eq .Values.primaryStorage.type "local")) .Values.cache.localVolume.enableLocalVolumeProvisioner -}}
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
 apiVersion: apps/v1
+{{- else }}
+apiVersion: extensions/v1beta1
+{{- end }}
 kind: DaemonSet
 metadata:
   name: local-volume-provisioner
+  namespace: {{ .Release.Namespace }}
   labels:
     app: local-volume-provisioner
     chart: {{ template "humio-core.chart" . }}
