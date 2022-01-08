@@ -14,6 +14,9 @@ humio-core:
   storage:
     initialPartitionsPerNode: 4
 
+  openshift:
+    host: ""
+
   # Custom CPU/Memory resources
   resources:
     limits:

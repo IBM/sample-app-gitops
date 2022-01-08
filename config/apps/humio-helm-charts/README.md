@@ -16,3 +16,12 @@ The chart must be packaged before it can be served. Run the package helper to do
 ```
 ./bin/package.sh
 ```
+
+## Get Openshift hostname
+
+```bash
+kubectl cluster-info
+Kubernetes master is running at https://api.depone.cp.fyre.ibm.com:6443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
