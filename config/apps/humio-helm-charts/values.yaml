@@ -52,3 +52,19 @@ global:
   sharedTokens:
     fluentbit: {kubernetes: in-cluster}
 
+humio-strix:
+  enabled: false
+  replicas: 10
+  imagePullPolicy: Always
+  simulationOptions:
+    hecSimulation:
+      users: 5
+
+humio-fluentbit:
+  enabled: false
+  es:
+    tls: false
+    autodiscovery: false
+
+humio-metrics:
+  enabled: false
