@@ -32,6 +32,7 @@ supplementalGroups:
   type: RunAsAny
 users: 
 - system:serviceaccount:{{ default "default" .Release.Namespace }}:{{ .Release.Name }}
+- system:serviceaccount:{{ default "default" .Release.Namespace }}:{{ .Release.Name }}-post-install
 volumes:
 - configMap
 - downwardAPI
