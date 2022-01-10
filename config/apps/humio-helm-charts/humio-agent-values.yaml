@@ -1,3 +1,6 @@
+humio-core:
+  enabled: false
+  
 humio-fluentbit:
   enabled: true
   #humioRepoName: aiops

@@ -64,10 +64,18 @@ humio-strix:
       users: 5
 
 humio-fluentbit:
-  enabled: false
+  enabled: true
+  token: dumytoken
+  #humioRepoName: aiops
+  humioHostname: humio-instance-humio-core-es.humio-logging
   es:
-    tls: false
+    tls: false # TLS On. Set to false to turn it off.
+    tls_verify: false # TLS verify On. Set to false to turn it off.
     autodiscovery: false
+  securityContext:
+    privileged: true
+  scc:
+    enabled: true 
 
 humio-metrics:
   enabled: false
