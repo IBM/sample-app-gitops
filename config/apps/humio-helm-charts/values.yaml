@@ -64,10 +64,10 @@ humio-strix:
       users: 5
 
 humio-fluentbit:
-  enabled: true
+  enabled: false
   # Replace this token value with Ingest token from "robot-shop" repo after Humio and Fluentbit deployed in the environment.
   # create the repo "robot-shop" and replace this "dummy_token" with ingestion token of "robot-shop" repo.
-  token: "j6JflFJvfwnCgAvPtOuiU1TcYoHthRrJ1Xmlka1qI8vF"
+  token: "dummy_token"
   # humioRepoName: aiops
   humioRepoName: "robot-shop"
   es:
