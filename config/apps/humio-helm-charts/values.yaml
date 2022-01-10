@@ -65,9 +65,9 @@ humio-strix:
 
 humio-fluentbit:
   enabled: true
-  token: dumytoken
+  #token: dumytoken
   #humioRepoName: aiops
-  humioHostname: humio-instance-humio-core-es.humio-logging
+  humioHostname: {{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}
   es:
     tls: false # TLS On. Set to false to turn it off.
     tls_verify: false # TLS verify On. Set to false to turn it off.
