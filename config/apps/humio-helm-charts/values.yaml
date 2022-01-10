@@ -67,7 +67,7 @@ humio-fluentbit:
   enabled: true
   token: ""
   # humioRepoName: aiops
-  humioRepoName: "robot-shop"
+  # humioRepoName: "robot-shop"
   humioHostname: {{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}
   es:
     tls: false # TLS On. Set to false to turn it off.
