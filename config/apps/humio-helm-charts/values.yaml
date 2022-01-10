@@ -65,7 +65,7 @@ humio-strix:
 
 humio-fluentbit:
   enabled: true
-  # token: dumytoken
+  token: ""
   # humioRepoName: aiops
   humioRepoName: "robot-shop"
   humioHostname: {{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}
