@@ -65,6 +65,9 @@ humio-strix:
 
 humio-fluentbit:
   enabled: true
+  token: ""
+  # humioRepoName: aiops
+  humioRepoName: "robot-shop"
   humioHostname: {{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}
   es:
     tls: false # TLS On. Set to false to turn it off.
@@ -74,6 +77,31 @@ humio-fluentbit:
     privileged: true
   scc:
     enabled: true
+  inputConfig: |-
+    [INPUT]
+        Name             tail
+        Path             /var/log/containers/*bookinfo_*.log
+        Parser           docker
+        Tag              kube.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    256MB
+        Skip_Long_Lines  On
+    [INPUT]
+        Name             tail
+        Path             /var/log/containers/*robot-shop_*.log
+        Parser           docker
+        Tag              kube.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    256MB
+        Skip_Long_Lines  On
+    [INPUT]
+        Name             tail
+        Path             /var/log/containers/*qotd*.log
+        Parser           docker
+        Tag              kube.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    256MB
+        Skip_Long_Lines  On
 
 humio-metrics:
   enabled: false
