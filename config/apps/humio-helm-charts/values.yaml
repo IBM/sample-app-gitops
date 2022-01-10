@@ -65,14 +65,13 @@ humio-strix:
 
 humio-fluentbit:
   enabled: true
-  token: "dummy"
+  # token: "dummy"
   # humioRepoName: aiops
-  # humioRepoName: "robot-shop"
-  # humioHostname: {{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}
+  humioRepoName: "robot-shop"
   es:
     tls: false # TLS On. Set to false to turn it off.
     tls_verify: false # TLS verify On. Set to false to turn it off.
-    autodiscovery: false
+    autodiscovery: true
   securityContext:
     privileged: true
   scc:
