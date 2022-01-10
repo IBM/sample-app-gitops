@@ -1,22 +1,31 @@
 humio-core:
   enabled: false
   
+humio-strix:
+  enabled: false
+  replicas: 10
+  imagePullPolicy: Always
+  simulationOptions:
+    hecSimulation:
+      users: 5
+
 humio-fluentbit:
   enabled: true
-  #humioRepoName: aiops
-  humioHostname: humio-instance-humio-core-es.humio-logging
+  # Replace this token value with Ingest token from "robot-shop" repo after Humio and Fluentbit deployed in the environment.
+  # create the repo "robot-shop" and replace this "dummy_token" with ingestion token of "robot-shop" repo.
+  token: "REPLACE_ME"
+  # humioRepoName: aiops
+  humioRepoName: "robot-shop"
+  humioReleaseName: "humio"
+  humioNamespace: "humio-logging"
   es:
     tls: false # TLS On. Set to false to turn it off.
     tls_verify: false # TLS verify On. Set to false to turn it off.
-    autodiscovery: false
+    autodiscovery: true
   securityContext:
     privileged: true
   scc:
-    enabled: true    
-  # Example of custom fluentbit config
-  customFluentBitConfig:
-
-  # Example of custom input config
+    enabled: true
   inputConfig: |-
     [INPUT]
         Name             tail
@@ -42,7 +51,6 @@ humio-fluentbit:
         Refresh_Interval 5
         Mem_Buf_Limit    256MB
         Skip_Long_Lines  On
-  # Example of custom resources
   resources:
     limits:
       cpu: 256m
@@ -50,3 +58,6 @@ humio-fluentbit:
     requests:
       cpu: 128m
       memory: 256Mi
+
+humio-metrics:
+  enabled: false
