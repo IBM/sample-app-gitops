@@ -64,12 +64,14 @@ humio-strix:
       users: 5
 
 humio-fluentbit:
-  enabled: false
+  enabled: true
   # Replace this token value with Ingest token from "robot-shop" repo after Humio and Fluentbit deployed in the environment.
   # create the repo "robot-shop" and replace this "dummy_token" with ingestion token of "robot-shop" repo.
   token: "dummy_token"
   # humioRepoName: aiops
   humioRepoName: "robot-shop"
+  humioReleaseName: "humio"
+  humioNamespace: "humio-logging"
   es:
     tls: false # TLS On. Set to false to turn it off.
     tls_verify: false # TLS verify On. Set to false to turn it off.
@@ -103,6 +105,13 @@ humio-fluentbit:
         Refresh_Interval 5
         Mem_Buf_Limit    256MB
         Skip_Long_Lines  On
+  resources:
+    limits:
+      cpu: 256m
+      memory: 500Mi
+    requests:
+      cpu: 128m
+      memory: 256Mi
 
 humio-metrics:
   enabled: false

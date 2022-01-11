@@ -81,8 +81,8 @@ spec:
         env:
         - name: FLUENT_ELASTICSEARCH_HOST
           {{- if .Values.es.autodiscovery }}
-          #value: "{{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}"
-          value: "{{ .Values.humioReleaseName }}-humio-core-es.{{ .Values.humioNamespace }}"
+          value: "{{ .Release.Name }}-humio-core-es.{{ .Release.Namespace }}"
+          #value: "{{ .Values.humioReleaseName }}-humio-core-es.{{ .Values.humioNamespace }}"
           {{- else }}
           value: {{ default "cloud.humio.com" .Values.humioHostname | quote }}
           {{- end }}
