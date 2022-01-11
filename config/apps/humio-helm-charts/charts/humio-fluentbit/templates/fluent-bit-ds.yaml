@@ -39,7 +39,7 @@ spec:
           - kubectl
           - wait
           - "--for=condition=Ready"
-          - "pod/{{ .Release.Name }}-humio-core-0"
+          - "pod/{{ .Values.humioReleaseName }}-humio-core-0"
           - "-n"
           - {{ .Release.Namespace }}
           - "--timeout=1500s"
@@ -53,7 +53,7 @@ spec:
           - kubectl
           - wait
           - "--for=condition=Complete"
-          - "job/{{ .Release.Name }}-create-shared-tokens"
+          - "job/{{ .Values.humioReleaseName }}-create-shared-tokens"
           - "-n"
           - {{ .Release.Namespace }}
           - "--timeout=1500s"
