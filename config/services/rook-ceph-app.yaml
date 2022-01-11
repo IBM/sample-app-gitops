@@ -1,0 +1,79 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-app
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/huang-cn/sample-app-gitops
+    path: config/services/rook-ceph
+    targetRevision: gitops_humio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-charts
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      parameters:
+        - name: hostpathRequiresPrivileged
+          value: "true"
+        - name: image.tag
+          value: "v1.7.8"
+    repoURL: https://charts.rook.io/release/
+    chart: rook-ceph
+    targetRevision: v1.7.8
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-cluster
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "300"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/huang-cn/sample-app-gitops
+    path: gitops-charts/rook-ceph-cluster
+    targetRevision: gitops_humio
+  syncPolicy:
+    automated:
+      prune: true
+  ignoreDifferences:
+    - group: ceph.rook.io
+      jsonPointers:
+        - /spec/disruptionManagement/managePodBudgets
+      kind: CephCluster
