@@ -39,6 +39,6 @@ volumes:
 - emptyDir
 - persistentVolumeClaim
 - projected
-- secret
 - route
+- secret
 {{ end }}
