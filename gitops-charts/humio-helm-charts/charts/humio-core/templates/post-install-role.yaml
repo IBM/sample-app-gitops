@@ -15,3 +15,7 @@ rules:
   resources:
   - jobs
   verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources:
+  - routes
+  verbs: ["get", "list", "watch"]

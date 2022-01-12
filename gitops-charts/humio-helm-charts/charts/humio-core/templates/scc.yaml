@@ -40,5 +40,5 @@ volumes:
 - persistentVolumeClaim
 - projected
 - secret
-- routes
+- route
 {{ end }}
