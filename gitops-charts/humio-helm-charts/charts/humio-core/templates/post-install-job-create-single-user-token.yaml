@@ -9,7 +9,7 @@ metadata:
     helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
 spec:
-  ttlSecondsAfterFinished: 600
+  #ttlSecondsAfterFinished: 600
   template:
     metadata:
       name: "{{.Release.Name}}"
