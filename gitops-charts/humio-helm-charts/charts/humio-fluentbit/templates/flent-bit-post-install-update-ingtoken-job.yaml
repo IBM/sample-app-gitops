@@ -52,14 +52,12 @@ spec:
           env:
             - name: RELEASE_NAME
               value: "{{ .Release.Name }}"
+            - name: RELEASE_NAMESPACE
+              value: "{{ .Release.Namespace }}"
             - name: POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
           volumeMounts:
           - name: data
             mountPath: /opt/humio

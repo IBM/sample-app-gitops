@@ -6,12 +6,16 @@ rules:
 - apiGroups: [""]
   resources:
   - pods
-  verbs: ["get", "list", "watch"]
+  verbs: ["delete", "get", "list", "watch"]
 - apiGroups: [""]
   resources:
    - secrets
-  verbs: ["get", "list", "create"]
+  verbs: ["get", "list", "create", "patch"]
 - apiGroups: ["batch"]
   resources:
   - jobs
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["route.openshift.io"]
+  resources:
+  - routes
   verbs: ["get", "list", "watch"]

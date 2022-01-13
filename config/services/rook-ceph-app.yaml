@@ -14,9 +14,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/huang-cn/sample-app-gitops
+    repoURL: https://github.com/cloud-pak-gitops/sample-app-gitops
     path: config/services/rook-ceph
-    targetRevision: gitops_humio
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
@@ -66,9 +66,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/huang-cn/sample-app-gitops
+    repoURL: https://github.com/cloud-pak-gitops/sample-app-gitops
     path: gitops-charts/rook-ceph-cluster
-    targetRevision: gitops_humio
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
