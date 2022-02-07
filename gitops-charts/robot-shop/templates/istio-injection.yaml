@@ -1,0 +1,165 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: robot-shop-resource-locker
+  namespace: resource-locker-operator
+spec:
+  patches:
+  - id: istio-injection-cart
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: cart
+      namespace: robot-shop
+  - id: istio-injection-catalogue
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: catalogue
+      namespace: robot-shop
+  - id: istio-injection-dispatch
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: dispatch
+      namespace: robot-shop
+  - id: istio-injection-mongodb
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: mongodb
+      namespace: robot-shop
+  - id: istio-injection-mysql
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: mysql
+      namespace: robot-shop
+  - id: istio-injection-payment
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: payment
+      namespace: robot-shop
+  - id: istio-injection-rabbitmq
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: rabbitmq
+      namespace: robot-shop
+  - id: istio-injection-ratings
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: ratings
+      namespace: robot-shop
+  - id: istio-injection-shipping
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: shipping
+      namespace: robot-shop
+  - id: istio-injection-user
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: user
+      namespace: robot-shop
+  - id: istio-injection-web
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: web
+      namespace: robot-shop
+  - id: istio-injection-redis
+    patchTemplate: |
+      spec:
+        template:
+          metadata:
+            annotations:
+              sidecar.istio.io/inject: "true"
+    patchType: application/merge-patch+json
+    targetObjectRef:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      name: redis
+      namespace: robot-shop
+  serviceAccountRef:
+    name: resource-locker-operator-controller-manager
