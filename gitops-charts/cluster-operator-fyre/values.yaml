@@ -1,0 +1,14 @@
+---
+fyre:
+  credential:
+    username: REPLACE_IT
+    password: REPLACE_IT
+    product_group_id: REPLACE_IT
+
+argo:
+  namespace: openshift-gitops
+
+sample:
+  quickburn:
+    large: false
+    medium: false
