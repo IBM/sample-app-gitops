@@ -23,8 +23,8 @@ humio-core:
      cpu: 2
      memory: 8Gi
     requests:
-     cpu: 1
-     memory: 6Gi
+     cpu: 500m
+     memory: 2Gi
 
   cp-helm-charts:
     cp-kafka:
