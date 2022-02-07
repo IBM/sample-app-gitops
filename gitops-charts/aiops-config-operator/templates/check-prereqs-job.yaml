@@ -1,0 +1,65 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: check-aiops-config-prereqs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: check-aiops-config-prereqs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+rules:
+- apiGroups: [""]
+  resources:
+  - pods
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: check-aiops-config-prereqs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: check-aiops-config-prereqs
+subjects:
+- kind: ServiceAccount
+  name: check-aiops-config-prereqs
+  namespace: {{ default "default" .Release.Namespace }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-aiops-config-prereqs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-900"
+spec:
+  template:
+    spec:
+      containers:
+        - name: check
+          image: quay.io/openshift/origin-cli:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -x
+
+              # Wait aimanager aio controller
+              while : ; do
+                if oc get pod -n {{ default "default" .Release.Namespace }} -l='app.kubernetes.io/component=controller,app.kubernetes.io/instance=aimanager,app.kubernetes.io/name=aio' -o jsonpath='{.items[*].status.phase}' | grep -q ^Running$; then
+                  echo "INFO: aimanager aio controller available."
+                  break
+                fi
+                echo "INFO: aimanager aio controller not available, waiting."
+                sleep 10
+              done
+      restartPolicy: Never
+      serviceAccountName: check-aiops-config-prereqs
+  backoffLimit: 10
