@@ -1,0 +1,41 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: 110-waitfor-operators
+  annotations:
+    argocd.argoproj.io/sync-wave: "110"
+  namespace: istio-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: config
+          image: quay.io/openshift/origin-cli:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "150m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -x
+
+              while : ; do
+                READY=$(oc get po -n openshift-operators | grep -v Completed | grep -v Error |grep "0/" |wc -l| tr -d ' ')
+                if [[ ! $READY  =~ '0' ]]; then
+                  echo 'Operators not ready yet.'
+                  sleep 10s
+                else
+                  break
+                fi
+              done
+
+      restartPolicy: Never
+      serviceAccountName: openshift-argocd-admin-ai
+  backoffLimit: 4
