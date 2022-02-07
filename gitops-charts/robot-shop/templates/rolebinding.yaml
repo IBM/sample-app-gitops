@@ -1,0 +1,76 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: robot-shop-role-binding
+  namespace: robot-shop
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- kind: ServiceAccount
+  name: openshift-gitops-argocd-application-controller
+  namespace: openshift-gitops
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: robot-shop-resource-locker
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+rules:
+- apiGroups: ["apps"]
+  resources:
+  - deployments
+  - statefulsets
+  verbs: ["get", "list", "watch", "patch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: robot-shop-resource-locker-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: robot-shop-resource-locker
+subjects:
+  - kind: ServiceAccount
+    name: resource-locker-operator-controller-manager
+    namespace: resource-locker-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:openshift:scc:anyuid
+  namespace: robot-shop
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:anyuid
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: robot-shop
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:openshift:scc:privileged
+  namespace: robot-shop
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1000"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:privileged
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: robot-shop
