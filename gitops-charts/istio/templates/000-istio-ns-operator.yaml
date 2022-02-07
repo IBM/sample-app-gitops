@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: openshift-operators-redhat
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
