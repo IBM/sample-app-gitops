@@ -5,8 +5,9 @@ metadata:
   name: humio-sample
   annotations:
     argocd.argoproj.io/sync-wave: "100"
-# spec:
+spec:
   # Add fields here
+  filters: "kubernetes.namespace_name=robot-shop"
 ---
 apiVersion: aiops.ibm.com/v1alpha1
 kind: KafkaConnection
@@ -23,5 +24,6 @@ metadata:
   name: kube-sample
   annotations:
     argocd.argoproj.io/sync-wave: "100"
-# spec:
+spec:
   # Add fields here
+  appNamespace: "robot-shop"
