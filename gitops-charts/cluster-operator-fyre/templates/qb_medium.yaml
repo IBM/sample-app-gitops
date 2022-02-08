@@ -1,0 +1,14 @@
+{{- if .Values.sample.quickburn.medium }}
+apiVersion: clusters.ibm.com/v1alpha1
+kind: OpenShiftFyre
+metadata:
+  name: openshiftfyre-qb-medium
+  namespace: {{ default "default" .Release.Namespace }}
+spec:
+  # Add fields here
+  providerSecretRef: {{ default "default" .Release.Namespace }}-fyre-secret
+  ocpVersion: "4.8.27"
+  size: "medium"
+  argocd:
+    namespace: {{ .Values.argo.namespace }}
+{{- end }}

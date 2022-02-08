@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: 900-wait-running-istio
+  annotations:
+    argocd.argoproj.io/sync-wave: "900"
+  namespace: istio-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: config
+          image: quay.io/openshift/origin-cli:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "150m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -x
+
+              while : ; do
+                READY=$(oc get pod -n istio-system | grep "1/1\|2/2\|3/3\|4/4"|wc -l|tr -d ' ')
+                if [[  $READY  -lt '8' ]]; then
+                  echo 'Deployment not completed yet.'
+                  sleep 30
+                else
+                  break
+                fi
+              done
+          
+      serviceAccountName: openshift-argocd-admin-ai
+      restartPolicy: Never
+  backoffLimit: 4
