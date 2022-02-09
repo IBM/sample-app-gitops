@@ -4,6 +4,9 @@ kind: Gateway
 metadata:
   name: robotshop-gateway
   namespace: robot-shop
+  annotations:
+    argocd.argoproj.io/sync-wave: "-500"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   selector:
     istio: ingressgateway # default Istio controller
@@ -19,6 +22,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: robotshop-web-vs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-500"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   hosts:
   - "*"
