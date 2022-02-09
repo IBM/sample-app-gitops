@@ -1,1 +1,9 @@
 ---
+humio:
+  enabled: true
+
+kafka:
+  enabled: true
+
+kube:
+  enabled: true
