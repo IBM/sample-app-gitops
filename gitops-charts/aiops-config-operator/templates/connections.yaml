@@ -1,3 +1,4 @@
+{{- if .Values.humio.enabled }}
 ---
 apiVersion: aiops.ibm.com/v1alpha1
 kind: HumioConnection
@@ -8,6 +9,8 @@ metadata:
 spec:
   # Add fields here
   filters: "kubernetes.namespace_name=robot-shop"
+{{- end }}
+{{- if .Values.kafka.enabled }}
 ---
 apiVersion: aiops.ibm.com/v1alpha1
 kind: KafkaConnection
@@ -17,6 +20,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "100"
 # spec:
   # Add fields here
+{{- end }}
+{{- if .Values.kube.enabled }}
 ---
 apiVersion: aiops.ibm.com/v1alpha1
 kind: KubeConnection
@@ -27,3 +32,4 @@ metadata:
 spec:
   # Add fields here
   appNamespace: "robot-shop"
+{{- end }}
