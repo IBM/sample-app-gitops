@@ -6,9 +6,9 @@ metadata:
   namespace: {{ default "default" .Release.Namespace }}
 spec:
   # Add fields here
-  providerSecretRef: {{ default "default" .Release.Namespace }}-fyre-secret
+  providerSecretRef: fyre-{{ .Values.sample.credentials.user }}-secret
   ocpVersion: "4.8.27"
   size: "large"
   argocd:
-    namespace: {{ .Values.argo.namespace }}
+    namespace: {{ .Values.sample.argo.namespace }}
 {{- end }}
