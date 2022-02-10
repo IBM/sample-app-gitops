@@ -1,0 +1,27 @@
+{{ if .Values.openshift.host }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: humio-resource-locker
+  namespace: resource-locker-operator
+spec:
+  patches:
+  - id: patch-service-annotation
+    patchTemplate: |
+      metadata:
+        annotations:
+          url: {{ (index . 0).spec.host }}
+    patchType: application/merge-patch+json
+    sourceObjectRefs:
+    - apiVersion: route.openshift.io/v1
+      kind: Route
+      name: "{{ include "humio-core.fullname" $ }}"
+      namespace: "{{ .Release.Namespace }}"
+    targetObjectRef:
+      apiVersion: v1
+      kind: Service
+      name: {{ include "humio-core.fullname" . }}-http
+      namespace: "{{ .Release.Namespace }}"
+  serviceAccountRef:
+    name: resource-locker-operator-controller-manager
+{{ end }}
