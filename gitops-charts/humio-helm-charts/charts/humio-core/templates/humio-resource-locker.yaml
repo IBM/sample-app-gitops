@@ -10,7 +10,7 @@ spec:
     patchTemplate: |
       metadata:
         annotations:
-          url: {{ (index . 0).spec.host }}
+          url: '{{ `{{ (index . '0').spec.host }}` }}'
     patchType: application/merge-patch+json
     sourceObjectRefs:
     - apiVersion: route.openshift.io/v1
