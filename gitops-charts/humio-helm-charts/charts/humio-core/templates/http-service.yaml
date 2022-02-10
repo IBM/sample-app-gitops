@@ -14,7 +14,7 @@ metadata:
     name: "Humio"
     id: "administer-mcm"
     roles: "ClusterAdministrator,Administrator,Operator,Viewer"
-    url: http://{{ include "routepath" (list . ) }}
+    # url: http://{{ include "routepath" (list . ) }}
 {{ end }}
 spec:
   type: {{ .Values.service.type }}

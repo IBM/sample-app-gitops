@@ -13,7 +13,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  host: {{ include "routepath" (list . ) }}
+  # host: {{ include "routepath" (list . ) }}
   port:
     targetPort: http
   to:
