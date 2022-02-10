@@ -10,7 +10,7 @@ spec:
     patchTemplate: |
       metadata:
         annotations:
-          url: '{{ `{{ (index . '0').spec.host }}` }}'
+          url: '{{ `{{ (index . 0).spec.host }}` }}'
     patchType: application/merge-patch+json
     sourceObjectRefs:
     - apiVersion: route.openshift.io/v1
@@ -20,7 +20,7 @@ spec:
     targetObjectRef:
       apiVersion: v1
       kind: Service
-      name: {{ include "humio-core.fullname" . }}-http
+      name: "{{ include "humio-core.fullname" . }}-http"
       namespace: "{{ .Release.Namespace }}"
   serviceAccountRef:
     name: resource-locker-operator-controller-manager
