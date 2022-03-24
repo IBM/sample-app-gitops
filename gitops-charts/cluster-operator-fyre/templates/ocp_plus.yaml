@@ -1,0 +1,29 @@
+{{- if .Values.sample.ocpPlus.enabled }}
+apiVersion: clusters.ibm.com/v1alpha1
+kind: OpenShiftFyre
+metadata:
+  name: openshiftfyre-ocp-plus
+  namespace: {{ default "default" .Release.Namespace }}
+spec:
+  # Add fields here
+  providerSecretRef: fyre-{{ .Values.sample.credentials.user }}-secret
+  quotaType: "ocp_plus"
+  site: {{ .Values.sample.ocpPlus.site }}
+  ocpVersion: {{ .Values.sample.ocpPlus.ocpVersion }}
+  platform: "x"
+  {{- if eq .Values.sample.ocpPlus.workerFlavor "extra-large" }}
+  worker:
+    count: "6"
+    cpu: "16"
+    memory: "32"
+    additionalDisk:
+    - "100"
+  {{- else }}
+  worker:
+    count: "3"
+    cpu: "16"
+    memory: "32"
+    additionalDisk:
+    - "100"
+  {{- end }}
+{{- end }}
