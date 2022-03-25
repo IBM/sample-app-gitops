@@ -3,6 +3,11 @@ sample:
   quickburn:
     large: false
     medium: false
+  ocpPlus:
+    enabled: false
+    site: "rtp"
+    ocpVersion: "4.8.27"
+    workerFlavor: extra-large
   credentials:
     user: REPLACE_IT
     token: REPLACE_IT

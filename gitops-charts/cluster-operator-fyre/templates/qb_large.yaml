@@ -2,7 +2,7 @@
 apiVersion: clusters.ibm.com/v1alpha1
 kind: OpenShiftFyre
 metadata:
-  name: openshiftfyre-qb-large
+  name: {{ .Values.sample.credentials.user }}-qb-large
   namespace: {{ default "default" .Release.Namespace }}
 spec:
   # Add fields here
