@@ -6,6 +6,8 @@ metadata:
   namespace: {{ default "default" .Release.Namespace }}
 spec:
   # Add fields here
+  argocd:
+    namespace: {{ .Values.sample.argo.namespace }}
   providerSecretRef: fyre-{{ .Values.sample.credentials.user }}-secret
   quotaType: "ocp_plus"
   site: {{ .Values.sample.ocpPlus.site }}
